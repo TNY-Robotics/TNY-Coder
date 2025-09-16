@@ -1,9 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: '2024-11-01',
+    compatibilityDate: '2025-07-15',
     devtools: { enabled: true },
-    app: { cdnURL: './' },
+    app: { cdnURL: './', baseURL: './' },
+    css: [ '~/assets/style.css' ],
     ssr: false,
+    router: { options: { hashMode: true } },
     modules: [
       '@nuxt/ui',
       '@pinia/nuxt',
@@ -11,18 +13,11 @@ export default defineNuxtConfig({
     ],
     i18n: {
         locales: [
-            {
-                code: 'fr',
-                file: 'fr-FR.ts'
-            },
-            {
-                code: 'en',
-                file: 'en-US.ts'
-            }
+            { code: 'fr', iso: 'fr-FR', name: 'Français', file: 'fr-FR.ts' },
+            { code: 'en', iso: 'en-US', name: 'English', file: 'en-US.ts' },
         ],
-        lazy: false,
         defaultLocale: 'en',
-        strategy: 'no_prefix',
+        strategy: 'no_prefix'
     },
     typescript: { shim: false },
 })

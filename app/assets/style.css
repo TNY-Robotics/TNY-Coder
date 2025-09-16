@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+#__nuxt {
+    @apply flex min-h-screen;
+}
+
+#__nuxt > div {
+    @apply flex grow bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-50;
+}

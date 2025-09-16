@@ -1,7 +1,7 @@
 {
   "name": "electron-nuxt",
   "main": "background.js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Electron / Nuxt template",
   "author": "FurWaz <furwaz.com>",
   "scripts": {
@@ -16,25 +16,25 @@
     "dev:electron:win": "set NODE_ENV=development& concurrently --kill-others \"nuxt dev\" \"wait-on http://localhost:3000 && tsc-watch -p ./electron --outDir .output/electron --onSuccess run.electron\""
   },
   "dependencies": {
-    "electron-log": "^5.2.4",
-    "electron-updater": "^6.3.9",
+    "electron-log": "^5.4.3",
+    "electron-updater": "^6.6.2",
     "express": "^4.21.2",
-    "nuxt": "^3.15.4",
+    "nuxt": "^4.1.2",
+    "typescript": "^5.9.2",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@nuxt/ui": "^2.21.0",
-    "@nuxtjs/i18n": "^9.1.4",
-    "@pinia/nuxt": "^0.9.0",
-    "@types/express": "^5.0.0",
-    "concurrently": "^9.1.2",
-    "electron": "^34.0.2",
+    "@nuxt/ui": "^3.3.4",
+    "@nuxtjs/i18n": "^10.1.0",
+    "@pinia/nuxt": "^0.11.2",
+    "@types/express": "^5.0.3",
+    "concurrently": "^9.2.1",
+    "electron": "^34.5.8",
     "electron-builder": "^25.1.8",
-    "tsc-watch": "^6.2.1",
-    "typescript": "^5.7.3",
+    "tsc-watch": "^6.3.1",
     "vite-plugin-electron": "^0.29.0",
     "vite-plugin-electron-renderer": "^0.14.6",
-    "wait-on": "^8.0.2"
+    "wait-on": "^8.0.5"
   }
 }

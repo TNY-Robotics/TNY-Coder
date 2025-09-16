@@ -1,6 +1,6 @@
 <template>
     <div class="flex w-fit h-fit">
-        <USelect :icon="themeIcon" v-model="$colorMode.preference" :options="themeOptions" /> 
+        <USelect :icon="themeIcon" v-model="$colorMode.preference" :items="themeOptions" /> 
     </div>
 </template>
 
