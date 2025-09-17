@@ -1,16 +1,5 @@
-# Electron / Nuxt app template
-Template repository for creating Electron apps in typescript with Nuxt.js as the front-end framework.
-
-![Preview](./doc/preview.png)
-
-## Features
-This template includes the following features:
-- [Nuxt.js](https://nuxt.com/) front-end framework
-- [Electron.js](https://www.electronjs.org/) desktop app framework
-- [Tailwind CSS](https://tailwindcss.com/) utility-first CSS framework
-- [NuxtUI](https://ui.nuxt.com/) component library
-- [Pinia](https://pinia.vuejs.org/) for state management
-- [Electron Builder](https://www.electron.build/) for building the app
+# TNY Coder
+Desktop application for programming your TNY robot !
 
 ## Requirements
 - [Node.js](https://nodejs.org/) v14 or later
@@ -21,13 +10,13 @@ This template includes the following features:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/FurWaz/ElectronNuxt-Template
+git clone https://github.com/TNY-Robotics/TNY-Coder
 ```
 
 ### 2. Install dependencies
 
 ```bash
-cd ElectronNuxt-Template
+cd TNY-Coder
 npm install
 ```
 

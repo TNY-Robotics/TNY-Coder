@@ -1,9 +1,9 @@
 {
-  "name": "electron-nuxt",
+  "name": "tny-coder",
+  "version": "1.0.0",
+  "description": "TNY Coder",
+  "author": "TNY Robotics",
   "main": "background.js",
-  "version": "1.1.0",
-  "description": "Electron / Nuxt template",
-  "author": "FurWaz <furwaz.com>",
   "scripts": {
     "dev": "nuxt dev --host",
     "build": "nuxt build",
@@ -16,6 +16,7 @@
     "dev:electron:win": "set NODE_ENV=development& concurrently --kill-others \"nuxt dev\" \"wait-on http://localhost:3000 && tsc-watch -p ./electron --outDir .output/electron --onSuccess run.electron\""
   },
   "dependencies": {
+    "blockly": "^12.3.0",
     "electron-log": "^5.4.3",
     "electron-updater": "^6.6.2",
     "express": "^4.21.2",
@@ -29,9 +30,11 @@
     "@nuxtjs/i18n": "^10.1.0",
     "@pinia/nuxt": "^0.11.2",
     "@types/express": "^5.0.3",
+    "@types/three": "^0.180.0",
     "concurrently": "^9.2.1",
     "electron": "^34.5.8",
     "electron-builder": "^25.1.8",
+    "three": "^0.180.0",
     "tsc-watch": "^6.3.1",
     "vite-plugin-electron": "^0.29.0",
     "vite-plugin-electron-renderer": "^0.14.6",

@@ -4,8 +4,8 @@ const Platform = builder.Platform;
 
 /** @type {import('electron-builder').Configuration}*/
 const options = {
-    appId: 'com.app.id',
-    productName: 'electron-nuxt-template',
+    appId: 'com.tny-robotics.tny-coder',
+    productName: 'tny-coder',
     asar: true,
     // protocols: {
     //     name: 'Your deeplink',

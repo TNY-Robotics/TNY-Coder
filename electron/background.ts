@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as os from 'os';
-import { app, BrowserWindow, protocol, shell } from 'electron';
+import { app, BrowserWindow, shell, ipcMain } from 'electron';
 // import updaterModule from 'updater';
 
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
@@ -22,14 +22,13 @@ function createWindow() {
         webPreferences: {
             devTools: true,
             nodeIntegration: true,
-            contextIsolation: false,
             preload: path.join(__dirname, 'preload.js')
         },
 
         titleBarStyle: 'hiddenInset',
         frame: true,
         titleBarOverlay: platform === 'darwin' && { height: headerSize },
-        title: 'Electron / Nuxt template',
+        title: 'TNY Coder',
         autoHideMenuBar: true,
     });
 
@@ -41,6 +40,35 @@ function createWindow() {
         }
         return { action: 'deny' };
     });
+
+    // Open simulator if asked to
+    ipcMain.handle('open-simulator', async () => new Promise((resolve) => {
+        const simuWindow = new BrowserWindow({
+            width: 960,
+            height: 640,
+            minWidth: 640,
+            minHeight: 360,
+            backgroundColor: '#000',
+            webPreferences: {
+                devTools: true,
+                nodeIntegration: true,
+                contextIsolation: false,
+                // preload: path.join(__dirname, 'preload.js')
+            },
+            titleBarStyle: 'hiddenInset',
+            frame: true,
+            titleBarOverlay: platform === 'darwin' && { height: headerSize },
+            title: 'TNY Simulator',
+            autoHideMenuBar: true,
+        });
+        if (process.env.NODE_ENV === 'development') {
+            simuWindow.loadURL('http://localhost:3000/#/simulator'); // nuxt dev server
+        } else {
+            simuWindow.loadURL(`file://${path.join(__dirname, 'public', 'index.html')}#/simulator`); // production build
+        }
+
+        simuWindow.webContents.once('did-finish-load', () => resolve(true));
+    }));
 
     // Open devtools in development mode
     if (!isProduction) {
@@ -58,11 +86,11 @@ function createWindow() {
 }
 
 app.whenReady().then(async () => {
-    const allWindows = BrowserWindow.getAllWindows()
+    const allWindows = BrowserWindow.getAllWindows();
     if (allWindows.length) {
-        allWindows[0].focus()
+        allWindows[0].focus();
     } else {
-        createWindow()
+        createWindow();
     }
 });
 
