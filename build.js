@@ -51,7 +51,7 @@ const options = {
         target: [
             {
                 target: 'nsis',
-                arch: ['x64', 'ia32'],
+                arch: ['x64'],
             },
         ],
         icon: 'build/icon.png',
@@ -86,7 +86,7 @@ const options = {
             Encoding: 'UTF-8',
             MimeType: 'x-scheme-handler/deeplink',
         },
-        target: ['AppImage', 'rpm', 'deb'],
+        target: ['AppImage', 'deb'],
         category: 'Development',
         icon: 'build/icon.png',
     }
@@ -108,17 +108,33 @@ const osMap = {
     linux: 'LINUX'
 };
 const currentPlatform = osMap[process.platform];
-const shouldPublish = process.env.GITHUB_ACTIONS ? 'always' : 'never'; // only publish when building in GH Actions
+const isCI = process.env.GITHUB_ACTIONS === 'true';
 
 console.log(`Build launched on platform : ${currentPlatform}`);
-console.log(`Publish mode : ${shouldPublish}`);
+console.log(`CI detected : ${isCI}`);
+
+// strip down options to only the current platform to avoid linux trying to build windows/mac and so on
+if (currentPlatform === 'LINUX') {
+    delete options.win;
+    delete options.mac;
+} else if (currentPlatform === 'WINDOWS') {
+    delete options.linux;
+    delete options.mac;
+} else if (currentPlatform === 'MAC') {
+    delete options.linux;
+    delete options.win;
+    if (isCI) {
+        // force arm64 architecture only (GH Actions macOS runners are arm64)
+        options.mac.target = [{ target: 'default', arch: 'arm64' }];
+    }
+}
 
 builder.build({
     targets: Platform[currentPlatform].createTarget(),
-    publish: shouldPublish,
+    publish: isCI ? 'always' : 'never',
     config: {
         ...options,
-        compression: 'normal', // use compression for production builds (slower build time, but smaller files)
+        compression: isCI ? 'normal' : 'store', // use compression for production builds (slower build time, but smaller files)
     }
 }).then((result) => {
     console.log('----------------------------');
