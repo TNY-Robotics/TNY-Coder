@@ -116,6 +116,7 @@ console.log(`CI detected : ${isCI}`);
 // strip down options to only the current platform to avoid linux trying to build windows/mac and so on
 if (currentPlatform === 'LINUX') {
     delete options.win;
+    delete options.nsis;
     delete options.mac;
 } else if (currentPlatform === 'WINDOWS') {
     delete options.linux;
@@ -123,6 +124,7 @@ if (currentPlatform === 'LINUX') {
 } else if (currentPlatform === 'MAC') {
     delete options.linux;
     delete options.win;
+    delete options.nsis;
     if (isCI) {
         // force arm64 architecture only (GH Actions macOS runners are arm64)
         options.mac.target = [{ target: 'default', arch: 'arm64' }];
@@ -130,7 +132,7 @@ if (currentPlatform === 'LINUX') {
 }
 
 builder.build({
-    targets: Platform[currentPlatform].createTarget(),
+    targets: null, // auto-detect targets
     publish: isCI ? 'always' : 'never',
     config: {
         ...options,
