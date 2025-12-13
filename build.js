@@ -12,7 +12,6 @@ const options = {
     //     // - Don't forget to set `MimeType: "x-scheme-handler/deeplink"` for `linux.desktop` entry!
     //     schemes: ['deeplink']
     // },
-    // // - Electron auto-updater config
     publish: [
         {
             provider: 'github',
@@ -21,30 +20,17 @@ const options = {
             releaseType: 'release'
         }
     ],
-
     // "store" | "normal" | "maximum" - For testing builds, use 'store' to reduce build time significantly.
     compression: 'store',
     removePackageScripts: true,
-
     nodeGypRebuild: false,
     buildDependenciesFromSource: false,
-
     files: [
         'package.json',
-        {
-            from: ".output/electron",
-            to: ".",
-            filter: ["**/*"]
-        },
-        {
-            from: ".output/public",
-            to: "public",
-            filter: ["**/*"]
-        }
+        { from: ".output/electron", to: ".", filter: ["**/*"] },
+        { from: ".output/public", to: "public", filter: ["**/*"] }
     ],
-    directories: {
-        output: 'release/${version}',
-    },
+    directories: { output: 'release/${version}', },
     win: {
         // eslint-disable-next-line no-template-curly-in-string
         artifactName: '${productName}-Setup-${version}-win.${ext}',
@@ -91,16 +77,6 @@ const options = {
         icon: 'build/icon.png',
     }
 };
-
-const platform = 'WINDOWS' // "MAC" | "LINUX" | "WINDOWS" - Change this to build for other platforms
-builder.build({
-    targets: Platform[platform].createTarget(),
-    config: options
-}).then((result) => {
-    console.log('----------------------------');
-    console.log('Platform:', platform);
-    console.log('Output:', JSON.stringify(result, null, 2));
-});
 
 const osMap = {
     win32: 'WINDOWS',
