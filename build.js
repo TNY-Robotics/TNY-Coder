@@ -115,10 +115,10 @@ console.log(`Publish mode : ${shouldPublish}`);
 
 builder.build({
     targets: Platform[currentPlatform].createTarget(),
+    publish: shouldPublish,
     config: {
         ...options,
         compression: 'normal', // use compression for production builds (slower build time, but smaller files)
-        publish: shouldPublish
     }
 }).then((result) => {
     console.log('----------------------------');
