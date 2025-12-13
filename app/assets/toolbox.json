@@ -138,12 +138,6 @@
     },
     {
         "kind": "category",
-        "id": "VARIABLES",
-        "categorystyle": "variable_category",
-        "custom": "VARIABLE"
-    },
-    {
-        "kind": "category",
         "contents": [
             {
                 "kind": "BLOCK",

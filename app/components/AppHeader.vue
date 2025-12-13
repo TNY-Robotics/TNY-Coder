@@ -44,29 +44,71 @@
             </UModal>
         </div>
         </div>
+        <SettingsModal v-model="settingsModalOpen" />
     </div>
 </template>
 
 <script lang="ts" setup>
-const toast = useToast();
+import * as Blockly from 'blockly';
 
+const toast = useToast();
+const router = useRouter();
+
+const settingsModalOpen = ref(false);
 const fileItems = ref([
   [
     {
-      label: 'Nouveau',
-      icon: 'i-lucide-file-plus',
+        label: 'Nouveau',
+        icon: 'i-lucide-file-plus',
+        onSelect: (e: Event) => {
+            router.go(0);
+        }
     },
     {
-      label: 'Charger',
-      icon: 'i-lucide-upload',
+        label: 'Charger',
+        icon: 'i-lucide-upload',
+        onSelect: (e: Event) => {
+            const select = document.createElement('input');
+            select.type = 'file';
+            select.accept = '.tnycode';
+            select.onchange = (event: any) => {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const json = event.target?.result;
+                    const workspace = Blockly.getMainWorkspace();
+                    const blocks = JSON.parse(json as string);
+                    Blockly.serialization.workspaces.load({blocks: {blocks: blocks, languageVersion: 0}}, workspace);
+                };
+                reader.readAsText(file);
+            };
+            select.click();
+        }
     },
     {
-      label: 'Sauvegarder',
-      icon: 'i-lucide-save',
+        label: 'Sauvegarder',
+        icon: 'i-lucide-save',
+        onSelect: (e: Event) => {
+            const workspace = Blockly.getMainWorkspace();
+            const content = Blockly.serialization.workspaces.save(workspace);
+            const blocks = content.blocks.blocks;
+            const json = JSON.stringify(blocks);
+            const blob = new Blob([json], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a') as HTMLAnchorElement;
+            link.style.display = 'none';
+            link.href = url;
+            link.download = 'My project.tnycode';
+            document.body.appendChild(link);
+            link.click();
+        }
     },
     {
-      label: 'Paramètres',
-      icon: 'i-lucide-cog',
+        label: 'Paramètres',
+        icon: 'i-lucide-cog',
+        onSelect: (e: Event) => {
+            settingsModalOpen.value = true;
+        }
     }
   ]
 ]);
@@ -79,7 +121,6 @@ const modalOpen = ref(false);
 function onConnectClicked(onSuccess: ()=>void) {
     isConnectLoading.value = true;
     const ip = getIP();
-    console.log('Connecting to', ip);
     if (!ip) {
         toast.add({
             title: 'Adresse IP invalide',
@@ -91,8 +132,11 @@ function onConnectClicked(onSuccess: ()=>void) {
         return;
     }
 
-    const remote = new TNYRemote('ws://'+ip+':5621');
+    const remote = new TNYRemote('ws://'+ip+':5621'); // TODO : in the future, allow user to select robot type (to change TNY360Remote to other TNYRemote subclasses)
     remote.on('connected', () => {
+        const robotRemote = new TNY360Remote(remote);
+        (window as any).remote = robotRemote; // make remote available for blocks
+
         toast.add({
             title: 'Connecté au robot',
             description: 'L\'éditeur est maintenant connecté au robot, tout est prêt.',
@@ -104,6 +148,8 @@ function onConnectClicked(onSuccess: ()=>void) {
         onSuccess();
     });
     remote.on('disconnected', () => {
+        (window as any).remote = undefined; // remove remote from blocks
+
         toast.add({
             title: 'Déconnecté du robot',
             description: 'L\'éditeur a été déconnecté du robot.',
@@ -114,6 +160,8 @@ function onConnectClicked(onSuccess: ()=>void) {
         isConnected.value = false;
     });
     remote.on('error', () => {
+        (window as any).remote = undefined; // remove remote from blocks
+
         toast.add({
             title: 'Connexion au robot impossible',
             description: 'Le robot ne semble pas répondre. Vérifiez que l\'adresse IP est correcte et que le robot est allumé et connecté au même réseau que cet ordinateur.',
@@ -195,6 +243,8 @@ function onSimulatorClicked(onSuccess: ()=>void) {
     simulatorSpawnPromise.then(() => {
         clearTimeout(popupTimeout);
         const remoteTimeout = setTimeout(() => {
+            (window as any).remote = undefined; // remove remote from blocks
+
             toast.add({
                 title: 'Connexion impossible au simulateur',
                 description: 'Le simulateur ne semble pas répondre. Essayez de fermer la fenêtre du simulateur et recommencez.',
@@ -207,6 +257,9 @@ function onSimulatorClicked(onSuccess: ()=>void) {
         const remote = new TNYRemote('ws://localhost:5621');
         remote.on('connected', () => {
             clearTimeout(remoteTimeout);
+            const robotRemote = new TNY360Remote(remote);
+            (window as any).remote = robotRemote; // make remote available for blocks
+
             toast.add({
                 title: 'Connecté au simulateur',
                 description: 'L\'éditeur est maintenant connecté au simulateur, tout est prêt.',
@@ -220,6 +273,9 @@ function onSimulatorClicked(onSuccess: ()=>void) {
 
         remote.on('disconnected', () => {
             clearTimeout(popupTimeout);
+            clearTimeout(remoteTimeout);
+            (window as any).remote = undefined; // remove remote from blocks
+
             toast.add({
                 title: 'Déconnecté du simulateur',
                 description: 'L\'éditeur a été déconnecté du simulateur.',
@@ -230,18 +286,6 @@ function onSimulatorClicked(onSuccess: ()=>void) {
             isConnected.value = false;
         });
     });
-    // if (!simulatorSpawnPromise) {
-    //     toast.add({
-    //         title: 'Impossible de lancer le simulateur',
-    //         description: 'Désolé, un problème s\'est produit lors du lancement du simulateur. Vérifiez que les popups sont autorisées.',
-    //         icon: 'i-lucide-circle-slash',
-    //         color: 'error'
-    //     });
-    //     isSimulatorLoading.value = false;
-    //     return;
-    // }
-
-    // TODO : callback if invoke timeout
 }
 </script>
 

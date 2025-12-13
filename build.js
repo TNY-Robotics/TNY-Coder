@@ -5,7 +5,7 @@ const Platform = builder.Platform;
 /** @type {import('electron-builder').Configuration}*/
 const options = {
     appId: 'com.tny-robotics.tny-coder',
-    productName: 'tny-coder',
+    productName: 'TNY Coder',
     asar: true,
     // protocols: {
     //     name: 'Your deeplink',
@@ -13,14 +13,14 @@ const options = {
     //     schemes: ['deeplink']
     // },
     // // - Electron auto-updater config
-    // publish: [
-    //     {
-    //         provider: 'github',
-    //         owner: 'your-github-username',
-    //         repo: 'your-github-repo',
-    //         releaseType: 'release'
-    //     }
-    // ],
+    publish: [
+        {
+            provider: 'github',
+            owner: 'TNY-Robotics',
+            repo: 'TNY-Coder',
+            releaseType: 'release'
+        }
+    ],
 
     // "store" | "normal" | "maximum" - For testing builds, use 'store' to reduce build time significantly.
     compression: 'store',
@@ -47,22 +47,27 @@ const options = {
     },
     win: {
         // eslint-disable-next-line no-template-curly-in-string
-        artifactName: '${productName}-Setup-${version}.${ext}',
+        artifactName: '${productName}-Setup-${version}-win.${ext}',
         target: [
             {
                 target: 'nsis',
                 arch: ['x64', 'ia32'],
             },
         ],
+        icon: 'build/icon.png',
     },
     nsis: {
         oneClick: false,
         perMachine: false,
         allowToChangeInstallationDirectory: true,
         deleteAppDataOnUninstall: true,
+        createDesktopShortcut: true,
+        createStartMenuShortcut: true,
+        shortcutName: 'TNY Coder',
     },
     mac: {
-        category: 'public.app-category.entertainment',
+        category: 'public.app-category.developer-tools',
+        artifactName: '${productName}-Setup-${version}-mac.${ext}',
         hardenedRuntime: false,
         gatekeeperAssess: false,
         target: [
@@ -71,15 +76,19 @@ const options = {
                 arch: ['x64', 'arm64'],
             },
         ],
+        icon: 'build/icon.png',
     },
     linux: {
-        maintainer: 'Your Name',
+        maintainer: 'TNY Robotics',
+        artifactName: '${productName}-Setup-${version}-linux.${ext}',
         desktop: {
             StartupNotify: 'false',
             Encoding: 'UTF-8',
             MimeType: 'x-scheme-handler/deeplink',
         },
         target: ['AppImage', 'rpm', 'deb'],
+        category: 'Development',
+        icon: 'build/icon.png',
     }
 };
 
@@ -91,4 +100,31 @@ builder.build({
     console.log('----------------------------');
     console.log('Platform:', platform);
     console.log('Output:', JSON.stringify(result, null, 2));
+});
+
+const osMap = {
+    win32: 'WINDOWS',
+    darwin: 'MAC',
+    linux: 'LINUX'
+};
+const currentPlatform = osMap[process.platform];
+const shouldPublish = process.env.GITHUB_ACTIONS ? 'always' : 'never'; // only publish when building in GH Actions
+
+console.log(`Build launched on platform : ${currentPlatform}`);
+console.log(`Publish mode : ${shouldPublish}`);
+
+builder.build({
+    targets: Platform[currentPlatform].createTarget(),
+    config: {
+        ...options,
+        compression: 'normal', // use compression for production builds (slower build time, but smaller files)
+        publish: shouldPublish
+    }
+}).then((result) => {
+    console.log('----------------------------');
+    console.log('Build completed successfully!');
+    console.log('Generated files:', JSON.stringify(result, null, 2));
+}).catch((error) => {
+    console.error('Error during build:', error);
+    process.exit(1); // Important for GitHub Actions to know that it failed
 });

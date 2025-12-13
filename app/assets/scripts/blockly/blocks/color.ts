@@ -2,6 +2,7 @@ import * as Blockly from 'blockly/core';
 import TYPE from './types';
 import type { JavascriptGenerator } from 'blockly/javascript';
 import { javascriptGenerator, Order } from 'blockly/javascript';
+import '@blockly/field-colour-hsv-sliders';
 
 function getCustomBlocks() {
     return [
@@ -32,9 +33,9 @@ function getCustomBlocks() {
                 helpUrl: ""
             },
             js: function (block: Blockly.Block, generator: JavascriptGenerator) {
-                var el = javascriptGenerator.valueToCode(block, 'el', Order.NONE);
-                var color = javascriptGenerator.valueToCode(block, 'color', Order.NONE);
-                return `setColor(${el}, ${color})`;
+                var el = javascriptGenerator.valueToCode(block, 'id', Order.NONE);
+                var colour = javascriptGenerator.valueToCode(block, 'colour', Order.NONE);
+                return `await window.remote.setLEDColor(${el}, ${colour});\n`;
             }
         },
         // GET COLOR
@@ -56,8 +57,31 @@ function getCustomBlocks() {
                 helpUrl: ""
             },
             js: function (block: Blockly.Block, generator: JavascriptGenerator) {
-                var el = javascriptGenerator.valueToCode(block, 'el', Order.NONE);
-                return `getColor(${el})`;
+                var el = javascriptGenerator.valueToCode(block, 'id', Order.NONE);
+                return [`await window.remote.getLEDColor(${el})`, Order.NONE];
+            }
+        },
+        // COLOR PICKER
+        {
+            category: "COLORS",
+            block: {
+                type: 'colour_hsv_sliders',
+                message0: 'hsv %1',
+                output: TYPE.COLOUR,
+                style: "colors_blocks",
+                tooltip: "",
+                helpUrl: "",
+                args0: [
+                    {
+                        type: 'field_colour_hsv_sliders',
+                        name: 'colour',
+                        colour: '#ff0000',
+                    },
+                ],
+            },
+            js: function (block: Blockly.Block, generator: JavascriptGenerator) {
+                const colour = generator.quote_(block.getFieldValue('colour'));
+                return [colour, Order.ATOMIC];
             }
         }
     ];

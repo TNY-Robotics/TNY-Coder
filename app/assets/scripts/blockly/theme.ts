@@ -27,10 +27,6 @@ export function createTheme(darkMode: boolean) {
         },
         componentStyles: {
             workspaceBackgroundColour: '#0000',
-            flyoutBackgroundColour: darkMode? '#334155': '#f8fafc',
-            flyoutForegroundColour: darkMode? '#fff': '#000',
-            toolboxBackgroundColour: darkMode? '#334155': '#f8fafc',
-            toolboxForegroundColour: darkMode? '#fff': '#000',
             scrollbarColour: '#64748b',
             scrollbarOpacity: 0.5,
             flyoutOpacity: 1,

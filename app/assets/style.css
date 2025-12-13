@@ -13,3 +13,20 @@
 button {
     cursor: pointer;
 }
+
+.blocklyMainBackground {
+    stroke: none !important;
+}
+
+.blocklyToolbox {
+    @apply bg-neutral-50 dark:bg-neutral-800;
+}
+
+.blocklyFlyoutBackground {
+    @apply text-neutral-100 dark:text-neutral-900;
+    fill: currentColor !important;
+}
+
+.blocklyFlyoutScrollbar {
+    display: none !important;
+}

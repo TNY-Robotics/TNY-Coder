@@ -1,77 +1,69 @@
 <template>
-    <div class="flex grow h-screen overflow-hidden">
-        <canvas id="canvas" class="flex min-w-0 min-h-0 w-full h-full max-w-full" />
+    <div class="flex flex-col grow h-screen w-screen overflow-hidden">
+        <SimuHeader class="absolute" :model="robotModel" @model="robotSelectModalOpen = true" />
+        <ThreeView />
+        <UModal v-model:open="robotSelectModalOpen" title="Sélectionnez un modèle de robot" :dismissible="false" :close="false">
+            <template #body>
+                <div class="flex flex-col space-y-4">
+                    <button v-for="model in models"
+                        class="flex space-x-4 p-2 rounded-lg border-2 border-neutral-200 dark:border-neutral-800
+                               hover:border-primary hover:dark:border-primary hover:bg-primary/[0.05] hover:dark:bg-primary/[0.05] transition-colors"
+                        @click="onRobotSelected(model)"
+                    >
+                        <div class="flex h-full justify-center items-center">
+                            <img :src="model.image" alt="Robot Image" class="w-18 h-18 min-w-18 max-w-18 bg-neutral-200 dark:bg-neutral-800 rounded" />
+                        </div>
+                        <div class="flex flex-col justify-start text-start grow">
+                            <h2 class="text-lg font-bold">{{ model.title }}</h2>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">{{ model.description }}</p>
+                        </div>
+                    </button>
+                </div>
+            </template>
+        </UModal>
     </div>
 </template>
 
 <script lang="ts" setup>
-import * as THREE from 'three';
+import { TNY360 } from '~/assets/scripts/robots/TNY360';
+import type { TNYRobot } from '~/assets/scripts/robots/TNYRobot';
 
 const server = new TNYServer(5621);
-server.handle('getMotorRotation', async (data) => {
-    console.log('getMotorRotation', data);
-    return 90; // Example fixed rotation value
-});
-server.handle('rotateMotorBy', async (data) => {
-    console.log('rotateMotorBy', data);
-    return true; // Acknowledge the command
-});
-server.handle('setMotorRotation', async (data) => {
-    console.log('setMotorRotation', data);
-    return true; // Acknowledge the command
-});
-
 server.on('disconnected', () => {
-    console.log('Disconnected from server');
     close();
 });
 
+const robotModel = ref<TNYRobot>();
+
+const robotSelectModalOpen = ref(false);
 onMounted(() => {
-    const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-    const parent = canvas.parentElement as HTMLElement;
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    setTimeout(() => {
-        if (parent && canvas) {
-            canvas.style.width = parent.getBoundingClientRect().width+'px';
-            canvas.style.height = parent.getBoundingClientRect().height+'px';
-            renderer.setSize(parent.getBoundingClientRect().width, parent.getBoundingClientRect().height);
-            camera.aspect = parent.getBoundingClientRect().width / parent.getBoundingClientRect().height;
-            camera.updateProjectionMatrix();
-        }
-    }, 100);
-
-    window.addEventListener('resize', () => {
-        setTimeout(() => {
-            if (parent && canvas) {
-                canvas.style.width = parent.getBoundingClientRect().width+'px';
-                canvas.style.height = parent.getBoundingClientRect().height+'px';
-                renderer.setSize(parent.getBoundingClientRect().width, parent.getBoundingClientRect().height);
-                camera.aspect = parent.getBoundingClientRect().width / parent.getBoundingClientRect().height;
-                camera.updateProjectionMatrix();
-            }
-        }, 100);
-    });
-
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-    camera.position.z = 5;
-
-    const animate = function () {
-        requestAnimationFrame(animate);
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-        renderer.render(scene, camera);
-    };
-    animate();
+    robotSelectModalOpen.value = true;
 });
+
+const models = ref([
+    { obj: TNY360, title: 'TNY 360 - Robot chien', description: 'Un concentré de technologie compact pour comprendre, interagir et apprendre.', image: '/img/tny360.png' },
+    // { name: 'TNY 90', description: 'Le modèle de robot TNY de deuxième génération avec des améliorations.', image: '/robots/tny_robot_v2.png' },
+]);
+
+function onRobotSelected(model: any) {
+    robotModel.value = new model.obj();
+    robotSelectModalOpen.value = false;
+
+    server.clearHandlers();
+    robotModel.value?.useTNYServer(server);
+}
+
+let lastTime = performance.now();
+function update() {
+    const now = performance.now();
+    const deltaTime = (now - lastTime) / 1000;
+    lastTime = now;
+
+    robotModel.value?.update(deltaTime);
+    requestAnimationFrame(update);
+}
+requestAnimationFrame(update);
+
 </script>
 
 <style></style>

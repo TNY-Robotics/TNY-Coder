@@ -98,8 +98,6 @@ async function initBlockly() {
 
     Blockly.Scrollbar.scrollbarThickness = 14;
 
-    (window as any).TNYRemote = TNYRemote; // make TNYRemote available for blocks
-
     const toolbox = {
         kind: "categoryToolbox",
         contents: defaultToolbox.map((categ) => ({
@@ -160,16 +158,6 @@ async function initBlockly() {
     // add setup() and loop() endpoints
     spawnDefaultWorkspace(workspace);
 
-    // hide flyout scrollbar
-    const div = document.getElementById('blocklyDiv');
-    if (!div) {
-        console.error('blocklyDiv not found');
-        return;
-    }
-    div.querySelectorAll(".blocklyFlyoutScrollbar").forEach((e: any) => {
-        e.style.display = "none";
-    });
-
     // define run button
     compileCode = async () => {
         return new Promise((resolve, reject) => {
@@ -177,15 +165,15 @@ async function initBlockly() {
             javascriptGenerator.STATEMENT_SUFFIX = '}\nif (!onBlockEnd(%1)) return;\n';
             javascriptGenerator.addReservedWords('onBlockStart');
             javascriptGenerator.addReservedWords('onBlockEnd');
-            const code = javascriptGenerator.workspaceToCode(workspace);
+            const code = javascriptGenerator.workspaceToCode(workspace)
+                .replaceAll('\nfunction', '\nasync function'); // make all functions async;
             console.log(code);
             
             try { eval(code); resolve(); }
-            catch (e) { console.error('Error running code', e); reject(e); }
+            catch (e) { console.error('Error evaluating code', e); reject(e); }
         })
     }
 }
-
 
 const currentInstruction = ref<string|null>(null);
 const shouldOnlyStep = ref(false);
@@ -194,6 +182,10 @@ const running = ref(false);
 // Called before block execution, returns true if we should execute the block (false to skip it)
 function onBlockStart(id: string) {
     if (!running.value) return false; // Don't execute block if not running
+
+    if (!(window as any).remote) {
+        throw new TimeoutError();
+    }
 
     const workspace = Blockly.getMainWorkspace() as Blockly.WorkspaceSvg;
     workspace.highlightBlock(id);
@@ -274,6 +266,20 @@ function handleRuntimeError(e: any) {
         return;
     }
 
+    if (e instanceof TimeoutError) {
+        running.value = false;
+        currentInstruction.value = null;
+        const workspace = Blockly.getMainWorkspace() as Blockly.WorkspaceSvg;
+        workspace.highlightBlock(null);
+        toast.add({
+            title: 'Connexion perdue',
+            description: 'La connexion avec le robot a été perdue, arrêt de l\'exécution du code.',
+            icon: 'i-lucide-wifi-off',
+            color: 'warning'
+        });
+        return;
+    }
+
     toast.add({
         title: 'Erreur d\'exécution',
         description: 'Ils semble que votre code ait provoqué une erreur lors de son exécution. Corrigez les erreurs et réessayez.',
@@ -318,9 +324,7 @@ async function onStepPressed() {
 }
 
 async function runCode() {
-    const workspace = Blockly.getMainWorkspace() as Blockly.WorkspaceSvg;
-
-    if (!TNYRemote.getInstance()) {
+    if (!(window as any).remote) {
         toast.add({
             title: 'Robot non connecté',
             description: 'Connectez votre robot pour exécuter le code.',
@@ -342,7 +346,7 @@ async function runCode() {
         if (running.value) {
             try {
                 (window as any).blockly_loop?.().then(() => {
-                    setTimeout(loop, 100);
+                    setTimeout(loop, 0);
                 }).catch((e: any) => {
                     handleRuntimeError(e);
                 });
@@ -362,8 +366,4 @@ onMounted(() => {
 
 </script>
 
-<style>
-.blocklyMainBackground {
-    stroke: none !important;
-}
-</style>
+<style></style>

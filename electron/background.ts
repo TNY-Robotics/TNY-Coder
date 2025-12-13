@@ -24,7 +24,6 @@ function createWindow() {
             nodeIntegration: true,
             preload: path.join(__dirname, 'preload.js')
         },
-
         titleBarStyle: 'hiddenInset',
         frame: true,
         titleBarOverlay: platform === 'darwin' && { height: headerSize },
@@ -55,6 +54,7 @@ function createWindow() {
                 contextIsolation: false,
                 // preload: path.join(__dirname, 'preload.js')
             },
+            icon: path.join(__dirname, 'build', 'icon.png'),
             titleBarStyle: 'hiddenInset',
             frame: true,
             titleBarOverlay: platform === 'darwin' && { height: headerSize },

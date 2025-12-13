@@ -3,6 +3,7 @@
         <NuxtRouteAnnouncer />
         <UApp :toaster="{ position: 'bottom-center' }">
             <NuxtPage />
+            <Prompt />
         </UApp>
     </div>
 </template>
