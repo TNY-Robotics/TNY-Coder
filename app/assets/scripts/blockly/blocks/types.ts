@@ -1,5 +1,5 @@
 export default {
-    MOTOR: 'Motor',
+    JOINT: 'Joint',
     COLOR: 'Color',
     SOUND: 'Sound',
     NUMBER: 'Number',

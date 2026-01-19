@@ -134,62 +134,95 @@
         "categorystyle": "math_category"
     },
     {
+        "kind": "category",
+        "id": "TEXT",
+        "categorystyle": "text_category",
+        "contents": [
+            {
+                "kind": "block",
+                "type": "text"
+            },
+            {
+                "kind": "block",
+                "type": "text_join"
+            },
+            {
+                "kind": "block",
+                "type": "text_length"
+            },
+            {
+                "kind": "block",
+                "type": "text_isEmpty"
+            },
+            {
+                "kind": "block",
+                "type": "text_print" 
+            }
+        ]
+    },
+    {
         "kind": "SEP"
     },
     {
         "kind": "category",
         "contents": [
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_create_with"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_create_with"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_repeat"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_length"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_isEmpty"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_indexOf"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_getIndex"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_setIndex"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_getSublist"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_split"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_sort"
             },
             {
-                "kind": "BLOCK",
+                "kind": "block",
                 "type": "lists_reverse"
             }
         ],
         "id": "LISTS",
         "categorystyle": "list_category"
+    },
+    {
+        "kind": "category",
+        "id": "VARIABLES",
+        "categorystyle": "variable_category",
+        "custom": "VARIABLE"
     },
     {
         "kind": "category",
@@ -203,8 +236,8 @@
     {
         "kind": "category",
         "contents": [],
-        "id": "MOTORS",
-        "categorystyle": "motor_category"
+        "id": "JOINTS",
+        "categorystyle": "joint_category"
     },
     {
         "kind": "category",

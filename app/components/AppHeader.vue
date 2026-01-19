@@ -19,7 +19,7 @@
                         <div class="space-y-2">
                             <div class="flex flex-col space-y-2">
                                 <h2>Entrez l'adresse de votre robot ci-dessous</h2>
-                                <UButton label="Comment trouver l'adresse ?" class="w-fit p-0" size="sm" variant="link" href="https://docs.tny-robotics.com/TNY-360/usage/configuration/connecting/" target="_blank" />
+                                <UButton label="Comment trouver l'adresse ?" class="w-fit p-0" size="sm" variant="link" href="https://tny-robotics.com/docs/TNY-360/usage/configuration/connecting/" target="_blank" />
                             </div>
                             <div class="flex py-2 justify-center items-center w-full h-fit space-x-2">
                                 <input ref="ip1" type="text" class="w-12 text-center border border-neutral-300 dark:border-neutral-700 rounded-md pt-0.5" /> <p>.</p>
@@ -32,7 +32,7 @@
                             <div class="flex flex-col space-y-2">
                                 <h2>Vous n'avez pas de robot ?</h2>
                                 <UButton label="Utiliser le simulateur" class="w-fit p-0" size="sm" variant="link" @click="onSimulatorClicked(close)" icon="i-lucide-arrow-right" trailing :disabled="isConnectLoading || isConnected" :loading="isSimulatorLoading" />
-                                <UButton label="Commander un robot" class="w-fit p-0" size="sm" variant="link" href="https://tny-robotics.com/robots" target="_blank" icon="i-lucide-square-arrow-out-up-right" trailing />
+                                <UButton label="Commander un robot" class="w-fit p-0" size="sm" variant="link" href="https://tny-robotics.com/tny-360" target="_blank" icon="i-lucide-square-arrow-out-up-right" trailing />
                             </div>
                         </div>
                     </div>

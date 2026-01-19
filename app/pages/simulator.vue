@@ -6,8 +6,8 @@
             <template #body>
                 <div class="flex flex-col space-y-4">
                     <button v-for="model in models"
-                        class="flex space-x-4 p-2 rounded-lg border-2 border-neutral-200 dark:border-neutral-800
-                               hover:border-primary hover:dark:border-primary hover:bg-primary/[0.05] hover:dark:bg-primary/[0.05] transition-colors"
+                        class="flex space-x-4 p-2 rounded-lg border-2 border-neutral-200 dark:border-neutral-800 outline-0
+                               hover:border-primary hover:dark:border-primary hover:bg-primary/5 hover:dark:bg-primary/5 transition-colors"
                         @click="onRobotSelected(model)"
                     >
                         <div class="flex h-full justify-center items-center">

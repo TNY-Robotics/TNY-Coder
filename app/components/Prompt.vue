@@ -36,25 +36,32 @@ watch(isOpen, (newVal) => {
     }
 });
 
-(window as any).prompt = (title?: string, defaultValue?: string): Promise<string> => {
-    modalTitle.value = title || 'Title';
+// Au lieu d'écraser window.prompt, on crée une fonction dédiée
+const showBlocklyPrompt = (message: string, defaultValue: string, callback: (result: string | null) => void) => {
+    modalTitle.value = message;
+    inputValue.value = defaultValue;
     isOpen.value = true;
-    inputValue.value = defaultValue || '';
+    
+    // On garde le callback de Blockly en mémoire
+    resolveCb = (val) => callback(val);
+    rejectCb = () => callback(null); // Null annule l'opération dans Blockly
+};
 
-    return new Promise((resolve, reject) => {
-        resolveCb = resolve;
-        rejectCb = reject;
-    });
-}
+// On expose cette fonction au monde extérieur (pour le setup de Blockly)
+defineExpose({ showBlocklyPrompt });
 
-function cancel() {
-    isOpen.value = false;
-    rejectCb('User cancelled the prompt');
-}
+// Si tu préfères le global (plus simple pour setup Blockly ailleurs) :
+onMounted(() => {
+    (window as any).BlocklyPrompt = showBlocklyPrompt;
+});
 
 function validate() {
     isOpen.value = false;
-    resolveCb(inputValue.value);
+    if (resolveCb) resolveCb(inputValue.value);
+}
+function cancel() {
+    isOpen.value = false;
+    if (rejectCb) rejectCb();
 }
 </script>
 

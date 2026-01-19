@@ -158,6 +158,11 @@ async function initBlockly() {
     // add setup() and loop() endpoints
     spawnDefaultWorkspace(workspace);
 
+    // Set the prompt function for Blockly
+    Blockly.dialog.setPrompt(function(message: string, defaultValue: string, callback: (result: string | null) => void) {
+        (window as any).BlocklyPrompt(message, defaultValue, callback);
+    });
+
     // define run button
     compileCode = async () => {
         return new Promise((resolve, reject) => {
