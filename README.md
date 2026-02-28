@@ -56,19 +56,15 @@ Want to contribute, modify the app, or build it yourself? Here is everything you
 ### Installation
 
 1. **Clone** the repository:
-   ```bash
-   git clone [https://github.com/TNY-Robotics/TNY-Coder.git](https://github.com/TNY-Robotics/TNY-Coder.git)
-
+```bash
+git clone [https://github.com/TNY-Robotics/TNY-Coder.git](https://github.com/TNY-Robotics/TNY-Coder.git)
 ```
 
 2. **Install** dependencies:
 ```bash
 cd TNY-Coder
 npm install
-
 ```
-
-
 
 ### Running the App (Development)
 
@@ -77,41 +73,29 @@ You can run the application either in a standard web browser or inside the Elect
 * **In browser:**
 ```bash
 npm run dev
-
 ```
-
 
 * **In electron:**
 ```bash
 npm run dev:electron
-
 ```
-
-
 
 ### Building the App (Production)
 
 * **Nuxt web server:**
 ```bash
 npm run build
-
 ```
-
 
 * **Static website:**
 ```bash
 npm run generate
-
 ```
-
 
 * **Electron app (Generates the OS executables):**
 ```bash
 npm run build:electron
-
 ```
-
-
 
 > [!NOTE]
 > **For Windows Users:** Building the Electron app on Windows requires the terminal session to be run as an Administrator for the first time, as described in [this issue](https://github.com/electron-userland/electron-builder/issues/8149).
