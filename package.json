@@ -17,11 +17,13 @@
   },
   "dependencies": {
     "@blockly/field-colour-hsv-sliders": "^6.0.6",
+    "@types/three": "^0.184.1",
     "blockly": "^12.3.0",
     "electron-log": "^5.4.3",
     "electron-updater": "^6.8.3",
     "express": "^5.2.1",
     "nuxt": "^4.4.4",
+    "three": "^0.184.0",
     "typescript": "^6.0.3",
     "vue": "latest",
     "vue-router": "^5.0.6"
