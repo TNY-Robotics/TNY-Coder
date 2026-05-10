@@ -67,11 +67,6 @@ const options = {
     linux: {
         maintainer: 'TNY Robotics',
         artifactName: '${productName}-Setup-${version}-linux.${ext}',
-        desktop: {
-            StartupNotify: 'false',
-            Encoding: 'UTF-8',
-            MimeType: 'x-scheme-handler/deeplink',
-        },
         target: ['AppImage', 'deb'],
         category: 'Development',
         icon: 'build/icon.png',

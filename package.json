@@ -1,6 +1,6 @@
 {
   "name": "tny-coder",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "TNY Coder",
   "author": "TNY Robotics",
   "main": "background.js",
@@ -19,26 +19,24 @@
     "@blockly/field-colour-hsv-sliders": "^6.0.6",
     "blockly": "^12.3.0",
     "electron-log": "^5.4.3",
-    "electron-updater": "^6.6.2",
-    "express": "^4.21.2",
-    "nuxt": "^4.1.2",
-    "typescript": "^5.9.2",
+    "electron-updater": "^6.8.3",
+    "express": "^5.2.1",
+    "nuxt": "^4.4.4",
+    "typescript": "^6.0.3",
     "vue": "latest",
-    "vue-router": "^4.5.1"
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
-    "@nuxt/ui": "^3.3.4",
-    "@nuxtjs/i18n": "^10.1.0",
-    "@pinia/nuxt": "^0.11.2",
-    "@types/express": "^5.0.3",
-    "@types/three": "^0.180.0",
+    "@nuxt/ui": "^4.7.1",
+    "@nuxtjs/i18n": "^10.3.0",
+    "@pinia/nuxt": "^0.11.3",
+    "@types/express": "^5.0.6",
     "concurrently": "^9.2.1",
-    "electron": "^34.5.8",
-    "electron-builder": "^25.1.8",
-    "three": "^0.180.0",
-    "tsc-watch": "^6.3.1",
-    "vite-plugin-electron": "^0.29.0",
-    "vite-plugin-electron-renderer": "^0.14.6",
-    "wait-on": "^8.0.5"
+    "electron": "^42.0.1",
+    "electron-builder": "^26.8.1",
+    "tsc-watch": "^7.2.0",
+    "vite-plugin-electron": "^0.29.1",
+    "vite-plugin-electron-renderer": "^0.14.7",
+    "wait-on": "^9.0.5"
   }
 }

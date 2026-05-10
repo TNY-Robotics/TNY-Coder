@@ -19,7 +19,8 @@ export default {
     JOINT_ROTATE_BY: "Faire tourner l'articulation %1 de %2 degrés",
     JOINT_ENABLE: "Activer l'articulation %1",
     JOINT_DISABLE: "Désactiver l'articulation %1",
-    JOINT_SET_BODY_POSTURE: "Définir la posture du corps à Rotation X: %1°, Rotation Y: %2°, Rotation Z: %3°, Position X: %4 cm, Position Y: %5 cm, Position Z: %6 cm",
+    JOINT_SET_BODY_POSTURE: "Définir la posture du corps à Rotation X: %1 Rotation Y: %2 Rotation Z: %3 Position X: %4 Position Y: %5 Position Z: %6",
+    JOINT_SET_FEET_POSITION: "Définir la position de la patte %1 à Position X: %2 Position Y: %3 Position Z: %4",
     CONTROLS_WAIT_SECONDS: "Attendre %1 secondes",
     TNY_EAR_LEFT: "Oreille gauche",
     TNY_EAR_RIGHT: "Oreille droite",
@@ -35,4 +36,8 @@ export default {
     TNY_KNEE_PITCH_FR: "genou avant droite (Tangage)",
     TNY_KNEE_PITCH_BL: "genou arrière gauche (Tangage)",
     TNY_KNEE_PITCH_BR: "genou arrière droite (Tangage)",
+    TNY_LEG_FRONT_LEFT: "Patte avant gauche",
+    TNY_LEG_FRONT_RIGHT: "Patte avant droite",
+    TNY_LEG_BACK_LEFT: "Patte arrière gauche",
+    TNY_LEG_BACK_RIGHT: "Patte arrière droite",
 }

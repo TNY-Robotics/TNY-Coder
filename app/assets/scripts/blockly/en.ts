@@ -19,7 +19,8 @@ export default {
     JOINT_ROTATE_BY: "Rotate joint %1 by %2 degrees",
     JOINT_ENABLE: "Enable joint %1",
     JOINT_DISABLE: "Disable joint %1",
-    JOINT_SET_BODY_POSTURE: "Set body posture to Rotation X: %1°, Rotation Y: %2°, Rotation Z: %3°, Position X: %4 cm, Position Y: %5 cm, Position Z: %6 cm",
+    JOINT_SET_BODY_POSTURE: "Set body posture to Rotation X: %1 Rotation Y: %2 Rotation Z: %3 Position X: %4 Position Y: %5 Position Z: %6",
+    JOINT_SET_FEET_POSITION: "Set foot %1 position to Position X: %2 Position Y: %3 Position Z: %4",
     CONTROLS_WAIT_SECONDS: "Wait %1 seconds",
     TNY_EAR_LEFT: "Left ear",
     TNY_EAR_RIGHT: "Right ear",
@@ -35,4 +36,8 @@ export default {
     TNY_KNEE_PITCH_FR: "Front right knee (pitch)",
     TNY_KNEE_PITCH_BL: "Back left knee (pitch)",
     TNY_KNEE_PITCH_BR: "Back right knee (pitch)",
+    TNY_LEG_FRONT_LEFT: "Front left leg",
+    TNY_LEG_FRONT_RIGHT: "Front right leg",
+    TNY_LEG_BACK_LEFT: "Back left leg",
+    TNY_LEG_BACK_RIGHT: "Back right leg",
 }

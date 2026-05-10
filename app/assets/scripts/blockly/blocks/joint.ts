@@ -189,6 +189,48 @@ function getCustomBlocks() {
                 var posZ = javascriptGenerator.valueToCode(block, 'posZ', Order.NONE);
                 return `await window.remote.setBodyPosture(${rotX}, ${rotY}, ${rotZ}, ${posX}, ${posY}, ${posZ});\n`;
             }
+        },
+        // SET FEET POSITION
+        {
+            category: "JOINTS",
+            block: {
+                type: 'setter_joint_setFeetPosition',
+                message0: Blockly.Msg.JOINT_SET_FEET_POSITION,
+                args0: [
+                    {
+                        type: "input_value",
+                        name: "index",
+                        check: TYPE.LEG
+                    },
+                    {
+                        type: "input_value",
+                        name: "posX",
+                        check: TYPE.NUMBER
+                    },
+                    {
+                        type: "input_value",
+                        name: "posY",
+                        check: TYPE.NUMBER
+                    },
+                    {
+                        type: "input_value",
+                        name: "posZ",
+                        check: TYPE.NUMBER
+                    }
+                ],
+                previousStatement: null,
+                nextStatement: null,
+                style: "joint_blocks",
+                tooltip: "",
+                helpUrl: ""
+            },
+            js: function (block: Blockly.Block, generator: JavascriptGenerator) {
+                var index = javascriptGenerator.valueToCode(block, 'index', Order.NONE);
+                var posX = javascriptGenerator.valueToCode(block, 'posX', Order.NONE);
+                var posY = javascriptGenerator.valueToCode(block, 'posY', Order.NONE);
+                var posZ = javascriptGenerator.valueToCode(block, 'posZ', Order.NONE);
+                return `await window.remote.setFeetPosition(${index}, ${posX}, ${posY}, ${posZ});\n`;
+            }
         }
     ];
     
@@ -221,6 +263,29 @@ function getCustomBlocks() {
             },
             js: function (block: Blockly.Block) {
                 return [(joints as any)[joint], Order.NONE];
+            }
+        } as any);
+    });
+
+    let legs = {
+        'LEG_FRONT_LEFT': 0,
+        'LEG_FRONT_RIGHT': 1,
+        'LEG_BACK_LEFT': 2,
+        'LEG_BACK_RIGHT': 3
+    };
+    Object.keys(legs).forEach((leg) => {
+        blocks.push({
+            category: "JOINTS",
+            block: {
+                type: `leg_${leg}`,
+                message0: Blockly.Msg[`TNY_${leg}`],
+                output: TYPE.LEG,
+                style: "joint_enum_blocks",
+                tooltip: "",
+                helpUrl: ""
+            },
+            js: function (block: Blockly.Block) {
+                return [(legs as any)[leg], Order.NONE];
             }
         } as any);
     });

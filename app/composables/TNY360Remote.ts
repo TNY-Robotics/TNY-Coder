@@ -48,4 +48,13 @@ export class TNY360Remote {
             DEG_TO_RAD(rotZ),
         ]).then(() => {});
     }
+
+    public setFeetPosition(index: number, posX: number, posY: number, posZ: number): Promise<void> {
+        return this.remote.send(0x66, [Type.BYTE, Type.FLOAT, Type.FLOAT, Type.FLOAT], [], [
+            index,
+            posX*10, // robot works in mm not cm
+            posY*10, // robot works in mm not cm
+            posZ*10, // robot works in mm not cm
+        ]).then(() => {});
+    }
 }
