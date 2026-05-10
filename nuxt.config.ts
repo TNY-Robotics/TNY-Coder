@@ -20,4 +20,7 @@ export default defineNuxtConfig({
         strategy: 'no_prefix'
     },
     typescript: { shim: false },
+    experimental: {
+        viteEnvironmentApi: true // https://github.com/nuxt/nuxt/issues/34957
+    }
 })
